@@ -16,7 +16,6 @@ with open("style.css") as f:
 
 tab_vendas, tab_clientes, tab_inventario = st.tabs(["Relatório de Vendas", "Relatório de Clientes", "Relatório de Inventário"])
 
-# --- Relatório de Vendas ---
 with tab_vendas:
     st.header("Análise de Vendas")
 
@@ -67,13 +66,12 @@ with tab_vendas:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 
-# --- Relatório de Clientes ---
 with tab_clientes:
     st.header("Análise de Clientes")
     query = """
         SELECT C.nome, C.cidade, C.estado,
-               COUNT(V.id) as total_compras,
-               SUM(V.total_venda) as valor_gasto
+        COUNT(V.id) as total_compras,
+        SUM(V.total_venda) as valor_gasto
         FROM clientes C
         LEFT JOIN vendas V ON C.id = V.id_cliente
         GROUP BY C.id
@@ -94,7 +92,6 @@ with tab_clientes:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 
-# --- Relatório de Inventário ---
 with tab_inventario:
     st.header("Análise de Inventário (Estoque)")
     query_inventario = """
