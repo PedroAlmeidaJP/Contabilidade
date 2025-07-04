@@ -25,7 +25,6 @@ def calcular_dre():
         "Lucro do Período": lucro
     }
 
-
 def calcular_balanco_patrimonial():
     """Calcula todos os componentes do Balanço Patrimonial."""
     dre = calcular_dre()
@@ -76,12 +75,15 @@ def exportar_balanco_excel(caminho="balanco_patrimonial.xlsx"):
     with pd.ExcelWriter(caminho) as writer:
         df_ativo.to_excel(writer, sheet_name="Ativo", index=False)
         df_passivo.to_excel(writer, sheet_name="Passivo+PL", index=False)
-def relatorio_contas():
-    from database import df_from_sql
 
+def relatorio_contas():
+    """Une contas a pagar e a receber em um único DataFrame."""
     query = """
-        SELECT tipo, descricao, valor, data_vencimento
-        FROM contas
-        ORDER BY data_vencimento
+        SELECT origem AS descricao, valor, 'Pagar' AS tipo, NULL AS data_vencimento
+        FROM contas_a_pagar
+        UNION ALL
+        SELECT origem AS descricao, valor, 'Receber' AS tipo, NULL AS data_vencimento
+        FROM contas_a_receber
+        ORDER BY tipo
     """
-    return df_from_sql(query)
+    return db.df_from_sql(query)
