@@ -19,7 +19,6 @@ Este projeto é um sistema completo de **gestão contábil** desenvolvido em **P
   - DRE (Demonstração do Resultado do Exercício)
   - Balanço Patrimonial
   - Contas a Pagar e Receber
-- 🌓 Alternância entre **modo claro** e **modo escuro**
 - 💾 Banco de dados local (SQLite)
 - 📤 Exportação de relatórios para Excel
 
