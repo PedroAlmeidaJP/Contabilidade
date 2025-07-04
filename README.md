@@ -1,98 +1,103 @@
-# 📊 Sistema de Contabilidade com Streamlit
+📊 Sistema de Gestão Contábil e Operacional
+Bem-vindo ao Sistema de Gestão Contábil, um projeto completo desenvolvido em Python com Streamlit para a disciplina de Contabilidade Aplicada à Informática.
 
-Este projeto é um sistema completo de **gestão contábil** desenvolvido em **Python** com **Streamlit**, ideal para controle financeiro, bens patrimoniais, contas a pagar e a receber, produtos, clientes e fornecedores. Possui interface moderna com suporte a modo **escuro** e **claro**, painel administrativo e relatórios contábeis prontos para exportação.
+Este sistema simula o ambiente operacional e financeiro de uma loja de hardware e software, integrando funcionalidades de vendas, controlo de stock e relatórios contábeis essenciais como o Balanço Patrimonial e a DRE.
 
----
+✅ Funcionalidades Principais
+O sistema está dividido em módulos claros e intuitivos, acessíveis através de um menu de navegação lateral:
 
-## ✅ Funcionalidades
+🏠 Dashboard Principal: Uma visão geral da saúde financeira da empresa com os principais indicadores (KPIs) como Faturamento, Lucro, número de Clientes e Produtos.
 
-- 💼 Painel de Administração com abas:
-  - Capital Social
-  - Bens (Patrimônio)
-  - Fornecedores
-  - Clientes
-  - Produtos
-  - Entrada de Estoque
-- 📦 Cadastro de Produtos com valor e estoque
-- 🛒 Registro de Vendas com cálculo de lucro e custo (CMV)
-- 📈 Relatórios Contábeis:
-  - DRE (Demonstração do Resultado do Exercício)
-  - Balanço Patrimonial
-  - Contas a Pagar e Receber
-- 💾 Banco de dados local (SQLite)
-- 📤 Exportação de relatórios para Excel
+🛍️ Loja Virtual: Uma interface de e-commerce onde os clientes podem visualizar produtos com stock disponível e realizar compras (à vista ou a prazo).
 
----
+📈 Relatórios Contábeis: O coração financeiro do sistema, onde é possível visualizar:
 
-## 🖥️ Tecnologias Utilizadas
+Balanço Patrimonial (BP): Demonstra a posição de Ativos, Passivos e Património Líquido da empresa.
 
-- Python 3.11+
-- Streamlit
-- Pandas
-- SQLite3 (banco de dados leve e embutido)
-- XlsxWriter (para exportar Excel)
+Demonstração do Resultado do Exercício (DRE): Detalha as receitas, custos, impostos (ICMS) e o lucro final.
 
----
+Exportação para Excel: Todos os relatórios contábeis podem ser exportados com um clique.
 
-## ⚙️ Como Executar o Projeto
+📊 Relatórios Operacionais: Análises detalhadas do dia a dia da operação, com filtros avançados:
 
-### 🔁 Passo a passo para rodar em qualquer máquina:
+Relatório de Vendas: Filtre por período, marca ou forma de pagamento.
 
-#### 1. Clone o repositório
+Relatório de Clientes: Veja o histórico de compras e o valor gasto por cada cliente.
 
-```bash
+Relatório de Inventário: Análise do stock atual e o seu valor a preço de custo.
+
+⚙️ Painel de Administração: A área de gestão onde o utilizador pode:
+
+Realizar aportes de Capital Social.
+
+Comprar Bens para o património da empresa (ex: veículos, computadores de escritório).
+
+Gerir Fornecedores, Clientes e Produtos (com controlo de stock e origem Nacional/Importado).
+
+Dar Entrada de Estoque para produtos já existentes.
+
+🖥️ Tecnologias Utilizadas
+Linguagem: Python 3.11+
+
+Interface Web: Streamlit
+
+Manipulação de Dados: Pandas
+
+Base de Dados: SQLite3 (embutido, não requer instalação)
+
+Exportação: OpenPyXL
+
+⚙️ Como Executar o Projeto
+Para executar este projeto na sua máquina local, siga os passos abaixo.
+
+1. Clonar o Repositório
+Abra o seu terminal e clone este repositório:
+
 git clone https://github.com/PedroAlmeidaJP/Contabilidade.git
 cd Contabilidade
-2. (Opcional, mas recomendado) Crie um ambiente virtual
-bash
-Copiar
-Editar
-# macOS / Linux
+
+2. (Recomendado) Criar um Ambiente Virtual
+Isto isola as dependências do projeto.
+
+macOS / Linux:
+
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Windows
+Windows:
+
 python -m venv .venv
 .venv\Scripts\activate
-3. Instale as dependências do projeto
-bash
-Copiar
-Editar
+
+3. Instalar as Dependências
+Este comando irá instalar todas as bibliotecas necessárias que estão listadas no ficheiro requirements.txt.
+
 pip install -r requirements.txt
-Isso vai instalar todos os pacotes usados, como streamlit, pandas, etc.
 
-4. Execute a aplicação
-bash
-Copiar
-Editar
+4. (Opcional) Popular a Base de Dados com Dados de Exemplo
+Para iniciar o sistema com dados realistas (clientes, produtos, vendas), execute o script seed.py uma vez.
+
+python3 seed.py
+
+5. Executar a Aplicação
+Este é o comando final para ligar o servidor e abrir o sistema no seu navegador.
+
 streamlit run Dashboard.py
-O sistema será aberto no navegador padrão em:
-http://localhost:8501
 
-📁 Estrutura de Pastas e Arquivos
-bash
-Copiar
-Editar
+O sistema estará acessível em http://localhost:8501.
+
+📁 Estrutura do Projeto
 Contabilidade/
-├── Dashboard.py                 # Tela inicial com resumo e dashboard
-├── logic.py                    # Regras de negócio e cálculos dos relatórios
-├── database.py                 # Funções para interagir com o banco SQLite
-├── gestor.db                   # Banco de dados local
-├── requirements.txt            # Lista de bibliotecas usadas no projeto
-├── style.css                   # Estilo visual customizado (modo dark/clear)
-├── README.md                   # Este manual
-├── /pages                      # Páginas do sistema (Streamlit multipage)
-│   ├── Administracao.py
-│   ├── Diagnostico.py
-│   ├── Loja_Virtual.py
-│   ├── Relatorios.py
-│   └── Relatorios_Contabeis.py
-📦 Exportação de Relatórios
-Todos os relatórios podem ser exportados com um clique, no formato .xlsx. Isso inclui:
+├── Dashboard.py              # Ecrã inicial com o resumo geral
+├── logic.py                  # Contém as regras de negócio e os cálculos contábeis
+├── database.py               # Funções para interagir com a base de dados SQLite
+├── seed.py                   # Script para popular a base de dados com dados de exemplo
+├── gestor.db                 # Ficheiro da base de dados (criado após a execução)
+├── requirements.txt          # Lista de bibliotecas Python para o projeto
+└── /pages                    # Pasta com todas as outras páginas do sistema
+    ├── 2_🛍️_Loja_Virtual.py
+    ├── 3_📈_Relatorios_Contabeis.py
+    ├── 4_⚙️_Administracao.py
+    └── 5_📊_Relatorios_Operacionais.py
 
-Demonstração do Resultado do Exercício (DRE)
-
-Contas a Pagar e a Receber
-
-Balanço Patrimonial completo
 
