@@ -8,15 +8,19 @@ def popular_dados():
     print("Iniciando o povoamento do banco de dados...")
 
     # --- Dados Iniciais ---
-    fornecedores = [("TechData Distribuição", "12.345.678/0001-99", "São Paulo", "SP"),
-                    ("Allied Tecnologia", "98.765.432/0001-11", "Rio de Janeiro", "RJ"),
-                    ("Pichau Informática", "11.222.333/0001-44", "Joinville", "SC")]
-    
-    clientes = [("João da Silva", "123.456.789-00", "Santa Maria", "RS"),
-                ("Maria Souza", "987.654.321-00", "Porto Alegre", "RS"),
-                ("Inova Soluções TI", "55.444.333/0001-22", "Canoas", "RS"),
-                ("Pedro Almeida", "111.222.333-44", "Santa Cruz do Sul", "RS")]
-    
+    fornecedores = [
+        ("TechData Distribuição", "12.345.678/0001-99", "São Paulo", "SP"),
+        ("Allied Tecnologia", "98.765.432/0001-11", "Rio de Janeiro", "RJ"),
+        ("Pichau Informática", "11.222.333/0001-44", "Joinville", "SC")
+    ]
+
+    clientes = [
+        ("João da Silva", "123.456.789-00", "Santa Maria", "RS"),
+        ("Maria Souza", "987.654.321-00", "Porto Alegre", "RS"),
+        ("Inova Soluções TI", "55.444.333/0001-22", "Canoas", "RS"),
+        ("Pedro Almeida", "111.222.333-44", "Santa Cruz do Sul", "RS")
+    ]
+
     produtos = [
         ("Processador Intel Core i7-13700K", "Intel", "Importado", 2100.00, 2899.99, 1, 10),
         ("Processador AMD Ryzen 7 7800X3D", "AMD", "Importado", 2350.00, 3199.90, 2, 8),
@@ -40,65 +44,85 @@ def popular_dados():
     for p in produtos:
         origem = p[2]
         if origem == "Nacional":
-            icms_credito, icms_debito = p[3] * 0.12, p[4] * 0.18
+            icms_credito = p[3] * 0.12
+            icms_debito = p[4] * 0.18
         else:
-            icms_credito, icms_debito = p[3] * 0.04, p[4] * 0.04
+            icms_credito = p[3] * 0.04
+            icms_debito = p[4] * 0.04
+
         db.adicionar_produto(p[0], p[1], p[2], p[3], p[4], icms_credito, icms_debito, p[5], p[6])
     print(f"  - {len(produtos)} produtos adicionados.")
 
+    # Capital
     db.update_conta_geral("capital_social", 150000)
     db.update_conta_geral("caixa", 150000)
     print("  - Aporte de Capital Social de R$ 150.000,00 realizado.")
 
+    # Bem
     db.adicionar_bem("Veículo de Entregas Fiat Fiorino", 85000)
     db.update_conta_geral("caixa", db.get_conta_geral("caixa") - 85000)
     print("  - Compra de Bem (Veículo) à vista realizada.")
 
+    # --- Adiciona coluna 'parcelas' na tabela vendas, se ainda não existir ---
+    try:
+        conn = db.conectar()
+        cursor = conn.cursor()
+        cursor.execute("ALTER TABLE vendas ADD COLUMN parcelas INTEGER DEFAULT 1")
+        conn.commit()
+        conn.close()
+        print("  - Coluna 'parcelas' adicionada à tabela 'vendas'.")
+    except Exception as e:
+        if "duplicate column name" in str(e).lower():
+            print("  - Coluna 'parcelas' já existe na tabela 'vendas'.")
+        else:
+            print(f"  - Erro ao adicionar coluna 'parcelas': {e}")
+
+    # Vendas
     today = date.today()
-    db.adicionar_venda(1, 1, 1, 2899.99, "À Vista", today - timedelta(days=10))
-    db.adicionar_venda(3, 2, 1, 4999.00, "A Prazo", today - timedelta(days=5))
-    db.adicionar_venda(8, 1, 2, 699.80, "À Vista", today - timedelta(days=2))
-    db.adicionar_venda(7, 3, 10, 8499.00, "A Prazo", today)
+    db.adicionar_venda(1, 1, 1, 2899.99, "À Vista", today - timedelta(days=10), 1)
+    db.adicionar_venda(3, 2, 1, 4999.00, "A Prazo", today - timedelta(days=5), 5)
+    db.adicionar_venda(8, 1, 2, 699.80, "À Vista", today - timedelta(days=2), 1)
+    db.adicionar_venda(7, 3, 10, 8499.00, "A Prazo", today, 6)
     print("  - 4 vendas de exemplo adicionadas.")
 
     # --- Contas Contábeis (Pagar e Receber) ---
     db.executar_query("""
-    CREATE TABLE IF NOT EXISTS contas (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        tipo TEXT NOT NULL CHECK(tipo IN ('A Pagar', 'A Receber')),
-        descricao TEXT NOT NULL,
-        valor REAL NOT NULL,
-        data_vencimento TEXT NOT NULL
-    )
+        CREATE TABLE IF NOT EXISTS contas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            tipo TEXT NOT NULL CHECK(tipo IN ('A Pagar', 'A Receber')),
+            descricao TEXT NOT NULL,
+            valor REAL NOT NULL,
+            data_vencimento TEXT NOT NULL
+        )
     """)
-    
-    db.executar_query("""
-    INSERT INTO contas (tipo, descricao, valor, data_vencimento)
-    VALUES (?, ?, ?, ?)
-    """, ("A Pagar", "Compra de insumos", 1500.00, str(today + timedelta(days=5))))
-    
-    db.executar_query("""
-    INSERT INTO contas (tipo, descricao, valor, data_vencimento)
-    VALUES (?, ?, ?, ?)
-    """, ("A Receber", "Venda parcelada", 2800.00, str(today + timedelta(days=3))))
-    
-    db.executar_query("""
-    INSERT INTO contas (tipo, descricao, valor, data_vencimento)
-    VALUES (?, ?, ?, ?)
-    """, ("A Pagar", "Energia elétrica", 350.00, str(today + timedelta(days=2))))
-    
-    db.executar_query("""
-    INSERT INTO contas (tipo, descricao, valor, data_vencimento)
-    VALUES (?, ?, ?, ?)
-    """, ("A Receber", "Contrato de serviço", 1200.00, str(today + timedelta(days=10))))
-    
-    print("  - Contas a pagar e a receber adicionadas.")
 
+    db.executar_query("""
+        INSERT INTO contas (tipo, descricao, valor, data_vencimento)
+        VALUES (?, ?, ?, ?)
+    """, ("A Pagar", "Compra de insumos", 1500.00, str(today + timedelta(days=5))))
+
+    db.executar_query("""
+        INSERT INTO contas (tipo, descricao, valor, data_vencimento)
+        VALUES (?, ?, ?, ?)
+    """, ("A Receber", "Venda parcelada", 2800.00, str(today + timedelta(days=3))))
+
+    db.executar_query("""
+        INSERT INTO contas (tipo, descricao, valor, data_vencimento)
+        VALUES (?, ?, ?, ?)
+    """, ("A Pagar", "Energia elétrica", 350.00, str(today + timedelta(days=2))))
+
+    db.executar_query("""
+        INSERT INTO contas (tipo, descricao, valor, data_vencimento)
+        VALUES (?, ?, ?, ?)
+    """, ("A Receber", "Contrato de serviço", 1200.00, str(today + timedelta(days=10))))
+
+    print("  - Contas a pagar e a receber adicionadas.")
     print("\n✅ Povoamento concluído com sucesso!")
 
 if __name__ == "__main__":
     if os.path.exists(DB_FILE):
         print(f"Apagando banco de dados antigo '{DB_FILE}' para um novo começo.")
         os.remove(DB_FILE)
+
     db.criar_tabelas()
     popular_dados()
