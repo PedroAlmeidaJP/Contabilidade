@@ -1,0 +1,47 @@
+/* style.css - Tema inspirado no Linx Microvix */
+
+body {
+    background-color: #1E1E2F;
+    color: #FFFFFF;
+}
+
+h1, h2, h3, h4 {
+    color: #FFA500;
+}
+
+section[data-testid="stSidebar"] {
+    background-color: #2A003F;
+    color: white;
+}
+
+div[data-testid="metric-container"] {
+    background-color: #4B0082;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 8px;
+    color: white;
+    font-weight: bold;
+}
+
+.stButton > button {
+    background-color: #4B0082;
+    color: white;
+    border-radius: 8px;
+    padding: 0.6em 1em;
+    border: none;
+}
+
+.stButton > button:hover {
+    background-color: #5c1ca0;
+    color: #FFF;
+}
+
+thead tr th {
+    background-color: #4B0082;
+    color: white !important;
+}
+
+tbody tr td {
+    background-color: #2A003F;
+    color: white;
+}
