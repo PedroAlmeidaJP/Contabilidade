@@ -86,18 +86,3 @@ streamlit run Dashboard.py
 
 O sistema estará acessível em http://localhost:8501.
 
-📁 Estrutura do Projeto
-Contabilidade/
-├── Dashboard.py              # Ecrã inicial com o resumo geral
-├── logic.py                  # Contém as regras de negócio e os cálculos contábeis
-├── database.py               # Funções para interagir com a base de dados SQLite
-├── seed.py                   # Script para popular a base de dados com dados de exemplo
-├── gestor.db                 # Ficheiro da base de dados (criado após a execução)
-├── requirements.txt          # Lista de bibliotecas Python para o projeto
-└── /pages                    # Pasta com todas as outras páginas do sistema
-    ├── 2_🛍️_Loja_Virtual.py
-    ├── 3_📈_Relatorios_Contabeis.py
-    ├── 4_⚙️_Administracao.py
-    └── 5_📊_Relatorios_Operacionais.py
-
-
