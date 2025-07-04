@@ -32,7 +32,7 @@ Realizar aportes de Capital Social.
 
 Comprar Bens para o património da empresa (ex: veículos, computadores de escritório).
 
-Gerir Fornecedores, Clientes e Produtos (com controlo de stock e origem Nacional/Importado).
+Gerir Fornecedores, Clientes e Produtos (com controle de stock e origem Nacional/Importado).
 
 Dar Entrada de Estoque para produtos já existentes.
 
