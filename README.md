@@ -1,7 +1,7 @@
 📊 Sistema de Gestão Contábil e Operacional
 Bem-vindo ao Sistema de Gestão Contábil, um projeto completo desenvolvido em Python com Streamlit para a disciplina de Contabilidade Aplicada à Informática.
 
-Este sistema simula o ambiente operacional e financeiro de uma loja de hardware e software, integrando funcionalidades de vendas, controlo de stock e relatórios contábeis essenciais como o Balanço Patrimonial e a DRE.
+Este sistema simula o ambiente operacional e financeiro de uma loja de hardware e software, integrando funcionalidades de vendas, controle de stock e relatórios contábeis essenciais como o Balanço Patrimonial e a DRE.
 
 ✅ Funcionalidades Principais
 O sistema está dividido em módulos claros e intuitivos, acessíveis através de um menu de navegação lateral:
