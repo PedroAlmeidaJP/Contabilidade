@@ -8,11 +8,9 @@ def conectar():
     return sqlite3.connect(DB_NAME)
 
 def criar_tabelas():
-    """Cria TODAS as tabelas do banco de dados se elas não existirem."""
     conn = conectar()
     cursor = conn.cursor()
     
-    # --- Tabela de Produtos com a nova coluna 'origem' ---
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS produtos (
         id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL UNIQUE, marca TEXT, origem TEXT,
@@ -21,7 +19,6 @@ def criar_tabelas():
         FOREIGN KEY (id_fornecedor) REFERENCES fornecedores (id)
     )""")
     
-    # --- Outras tabelas (sem alterações) ---
     cursor.execute("CREATE TABLE IF NOT EXISTS fornecedores (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL UNIQUE, cnpj TEXT, cidade TEXT, estado TEXT)")
     cursor.execute("CREATE TABLE IF NOT EXISTS clientes (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, cpf_cnpj TEXT UNIQUE, cidade TEXT, estado TEXT)")
     cursor.execute("CREATE TABLE IF NOT EXISTS vendas (id INTEGER PRIMARY KEY AUTOINCREMENT, id_produto INTEGER NOT NULL, id_cliente INTEGER NOT NULL, quantidade INTEGER NOT NULL, total_venda REAL NOT NULL, tipo_pagamento TEXT, data_venda DATE, FOREIGN KEY (id_produto) REFERENCES produtos (id), FOREIGN KEY (id_cliente) REFERENCES clientes (id))")
@@ -51,12 +48,10 @@ def df_from_sql(query, params=()):
     conn.close()
     return df
 
-# --- Funções de Adicionar Dados (com 'origem') ---
 def adicionar_produto(nome, marca, origem, preco_compra, preco_venda, icms_credito, icms_debito, id_fornecedor, estoque_inicial):
     query = "INSERT INTO produtos (nome, marca, origem, preco_compra, preco_venda, icms_credito, icms_debito, id_fornecedor, estoque) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
     executar_query(query, (nome, marca, origem, preco_compra, preco_venda, icms_credito, icms_debito, id_fornecedor, estoque_inicial))
 
-# --- Funções existentes (sem alterações) ---
 def adicionar_fornecedor(nome, cnpj, cidade, estado):
     executar_query("INSERT INTO fornecedores (nome, cnpj, cidade, estado) VALUES (?, ?, ?, ?)", (nome, cnpj, cidade, estado))
 def adicionar_cliente(nome, cpf_cnpj, cidade, estado):
@@ -79,5 +74,4 @@ def adicionar_conta_a_pagar(origem, valor, tipo):
 def adicionar_conta_a_receber(id_venda, origem, valor):
     executar_query("INSERT INTO contas_a_receber (id_venda, origem, valor) VALUES (?, ?, ?)", (id_venda, origem, valor))
 
-# --- Execução Inicial ---
 criar_tabelas()
